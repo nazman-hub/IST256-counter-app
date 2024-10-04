@@ -9,14 +9,26 @@ export class counterApp extends DDDSuper(LitElement) {
 
   constructor() {
     super();
-    this.title = "";
+    this.title = "Counter";
+    this.count = 0;
+    this.min = 0;
+    this.count = 0;
   }
 
   static get properties() {
     return {
       title: { type: String },
+      count: { type: Number }
     };
   }
+
+  increaseCount(){
+    this.count+=1;
+  }
+  decreaseCount(){
+    this.count-=1;
+  }
+
 
   static get styles() {
     return [super.styles,
@@ -24,6 +36,7 @@ export class counterApp extends DDDSuper(LitElement) {
       :host {
         display: block;
         color: var(--ddd-theme-primary);
+        color: black;
         background-color: var(--ddd-theme-accent);
         font-family: var(--ddd-font-navigation);
         font-size: var(--counter-app-font-size, var(--ddd-font-size-s));
@@ -43,6 +56,14 @@ export class counterApp extends DDDSuper(LitElement) {
     return html`
 <div class="wrapper">
   <div>${this.title}</div>
+  <div class="count">
+   ${this.count}
+  </div>
+  <div class="buttons">
+     <button @click="${this.decreaseCount}">-</button>
+    <button @click="${this.increaseCount}">+</button>
+    
+  </div>
   <slot></slot>
 </div>`;
   }
