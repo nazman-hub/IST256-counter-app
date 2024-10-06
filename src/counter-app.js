@@ -44,11 +44,25 @@ export class counterApp extends DDDSuper(LitElement) {
       .wrapper {
         margin: var(--ddd-spacing-2);
         padding: var(--ddd-spacing-4);
+        background-color: lightblue;
+        width: 300px;
+        display: flex;
+        gap: 20px;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
       }
       div {
         padding: 0;
         margin: 0;
       }
+      .count-buttons button{
+        width:100px;
+        height: 100px;
+        margin: 16px;
+        font-size: 24px; 
+      }
+
     `];
   }
 
@@ -59,7 +73,7 @@ export class counterApp extends DDDSuper(LitElement) {
   <div class="count">
    ${this.count}
   </div>
-  <div class="buttons">
+  <div class="count-buttons">
      <button @click="${this.decreaseCount}">-</button>
     <button @click="${this.increaseCount}">+</button>
     
