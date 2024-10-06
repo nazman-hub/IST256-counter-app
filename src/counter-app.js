@@ -10,11 +10,15 @@ export class counterApp extends DDDSuper(LitElement) {
   constructor() {
     super();
     this.title = "Counter";
-    this.min = 20;
-    this.count = this.min;
+    this.min = 17;
     this.max = 25;
-    this.fancy=false;
+    this.fancy_21=false;
+    this.fancy_18=false;
+    this.fancy_increase=false;
+    this.fancy_decrease=false;
   }
+
+
 
   static get properties() {
     return {
@@ -22,41 +26,44 @@ export class counterApp extends DDDSuper(LitElement) {
       count: { type: Number },
       min: { type: Number },
       max: { type: Number },
-      fancy: { type: Boolean, reflect: true }  
+      fancy_21: { type: Boolean, reflect: true }  , 
+      fancy_18: { type: Boolean, reflect: true }  , 
+      fancy_increase: { type: Boolean, reflect: true }  , 
+      fancy_decrease: { type: Boolean, reflect: true }  
     }
   };
 
   increaseCount(){
     this.count+=1;
+    this.fancy_decrease = false;
+    this.fancy_increase = true;
   }
   decreaseCount(){
     this.count-=1;
-    console.log(this.min, this.count)
+    this.fancy_increase = false;
+    this.fancy_decrease = true;
+  }
+
+  firstUpdated(e){
+     this.count = this.min;
   }
   updated(e){
-    if(this.count === 21){
-      this.fancy = true;
+    // this.count = this.min;
+    if (this.count === 18){
+      this.fancy_18 = true;
+    }
+    else if(this.count === 21){
+      this.fancy_21 = true;
       this.makeItRain();
     } else{
-      this.fancy =false;
+      this.fancy_18 = false;
+      this.fancy_21 =false;
     }
   }
   makeItRain() {
-    // this is called a dynamic import. It means it won't import the code for confetti until this method is called
-    // the .then() syntax after is because dynamic imports return a Promise object. Meaning the then() code
-    // will only run AFTER the code is imported and available to us
-
     import("@haxtheweb/multiple-choice/lib/confetti-container.js").then(
       (module) => {
-        // This is a minor timing 'hack'. We know the code library above will import prior to this running
-        // The "set timeout 0" means "wait 1 microtask and run it on the next cycle.
-        // this "hack" ensures the element has had time to process in the DOM so that when we set popped
-        // it's listening for changes so it can react
         setTimeout(() => {
-          // forcibly set the poppped attribute on something with id confetti
-          // while I've said in general NOT to do this, the confetti container element will reset this
-          // after the animation runs so it's a simple way to generate the effect over and over again
-
           this.shadowRoot.querySelector("#confetti").setAttribute("popped", "");
         }, 0);
       }
@@ -98,13 +105,21 @@ export class counterApp extends DDDSuper(LitElement) {
       }
 
       .count{
-        font-size: 128px;
-        
+        font-size: 128px;  
       }
-
-      :host([fancy]) .count{
+      :host([fancy_increase]) .count{
+        color: rgb(126, 7, 120);
+      }
+      :host([fancy_decrease]) .count{
+        color: #008da0;
+      }
+      :host([fancy_21]) .count{
         color: blue;
       }
+      :host([fancy_18]) .count{
+        color: red;
+      }
+
 
       .count-buttons button{
         width:100px;
@@ -114,6 +129,9 @@ export class counterApp extends DDDSuper(LitElement) {
         background-color: var(--ddd-theme-default-beaverBlue);
         color: white;
         font-size: var(--ddd-font-size-l);
+      }
+      .count-buttons button:focus{
+        outline: black solid 5px;
       }
       .count-buttons button:hover{
         cursor:pointer;
