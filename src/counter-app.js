@@ -17,7 +17,9 @@ export class counterApp extends DDDSuper(LitElement) {
     this.fancy_increase=false;
     this.fancy_decrease=false;
   }
-
+  firstUpdated(e){
+    this.count = this.min;
+ }
 
 
   static get properties() {
@@ -44,9 +46,7 @@ export class counterApp extends DDDSuper(LitElement) {
     this.fancy_decrease = true;
   }
 
-  firstUpdated(e){
-     this.count = this.min;
-  }
+
   updated(e){
     // this.count = this.min;
     if (this.count === 18){
@@ -86,6 +86,9 @@ export class counterApp extends DDDSuper(LitElement) {
       div, h1 {
         padding: 0;
         margin: 0;
+      }
+      .title{
+        text-align: center;
       }
       .counter-wrapper {
         padding: var(--ddd-spacing-10);
@@ -154,7 +157,7 @@ export class counterApp extends DDDSuper(LitElement) {
       <confetti-container id="confetti">
         <div class="counter-wrapper">
 
-          <div>${this.title}</div>
+          <div class="title">${this.title}</div>
           <h1 class="count">${this.count}</h1>
           <div class="count-buttons">
             <button @click="${this.decreaseCount}" ?disabled="${this.min === this.count}">-</button>
